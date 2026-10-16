@@ -1,0 +1,587 @@
+[
+  {
+    "id": "sch_01",
+    "name": "SD Laboratorium UNESA",
+    "lat": -7.2798,
+    "lon": 112.7932,
+    "district": "Sukolilo",
+    "type": "SD",
+    "address": "Jl. Menur 125, Sukolilo, Surabaya"
+  },
+  {
+    "id": "sch_02",
+    "name": "SMP Negeri 19 Surabaya",
+    "lat": -7.2885,
+    "lon": 112.7845,
+    "district": "Sukolilo",
+    "type": "SMP",
+    "address": "Jl. Raya Menur No. 34, Sukolilo, Surabaya"
+  },
+  {
+    "id": "sch_03",
+    "name": "SMA Negeri 20 Surabaya",
+    "lat": -7.2789,
+    "lon": 112.7758,
+    "district": "Sukolilo",
+    "type": "SMA",
+    "address": "Jl. Klampis Jaya No. 11, Sukolilo, Surabaya"
+  },
+  {
+    "id": "sch_04",
+    "name": "SDIT Al Uswah Surabaya",
+    "lat": -7.2912,
+    "lon": 112.7955,
+    "district": "Sukolilo",
+    "type": "SD",
+    "address": "Jl. Kejawan Putih Tambak No. 1, Mulyorejo, Surabaya"
+  },
+  {
+    "id": "sch_05",
+    "name": "SMP Negeri 30 Surabaya",
+    "lat": -7.2854,
+    "lon": 112.7712,
+    "district": "Sukolilo",
+    "type": "SMP",
+    "address": "Jl. Medokan Asri Tengah No. 2, Rungkut, Surabaya"
+  },
+  {
+    "id": "sch_06",
+    "name": "SMA Negeri 16 Surabaya",
+    "lat": -7.3015,
+    "lon": 112.7684,
+    "district": "Rungkut",
+    "type": "SMA",
+    "address": "Jl. Prapen Indah No. 1, Rungkut, Surabaya"
+  },
+  {
+    "id": "sch_07",
+    "name": "SD Katolik Santa Clara",
+    "lat": -7.2805,
+    "lon": 112.7602,
+    "district": "Gubeng",
+    "type": "SD",
+    "address": "Jl. Ngagel Jaya No. 89, Gubeng, Surabaya"
+  },
+  {
+    "id": "sch_08",
+    "name": "SMP Negeri 29 Surabaya",
+    "lat": -7.2714,
+    "lon": 112.7831,
+    "district": "Mulyorejo",
+    "type": "SMP",
+    "address": "Jl. Tempurejo No. 35, Mulyorejo, Surabaya"
+  },
+  {
+    "id": "sch_09",
+    "name": "SMA Katolik Santo Hendrikus",
+    "lat": -7.2871,
+    "lon": 112.7705,
+    "district": "Gubeng",
+    "type": "SMA",
+    "address": "Jl. Arif Rahman Hakim No. 40, Sukolilo, Surabaya"
+  },
+  {
+    "id": "sch_10",
+    "name": "SD Negeri Manyar Sabrangan II",
+    "lat": -7.2762,
+    "lon": 112.7794,
+    "district": "Mulyorejo",
+    "type": "SD",
+    "address": "Jl. Manyar Sabrangan No. 12, Mulyorejo, Surabaya"
+  },
+  {
+    "id": "sch_11",
+    "name": "SD Muhammadiyah 4 Pucang",
+    "lat": -7.2831,
+    "lon": 112.7548,
+    "district": "Gubeng",
+    "type": "SD",
+    "address": "Jl. Pucang Anom No. 54, Gubeng, Surabaya"
+  },
+  {
+    "id": "sch_12",
+    "name": "SMP Muhammadiyah 5 Pucang",
+    "lat": -7.2842,
+    "lon": 112.7539,
+    "district": "Gubeng",
+    "type": "SMP",
+    "address": "Jl. Pucang Tama No. 1, Gubeng, Surabaya"
+  },
+  {
+    "id": "sch_13",
+    "name": "SMA Muhammadiyah 2 Surabaya",
+    "lat": -7.285,
+    "lon": 112.7551,
+    "district": "Gubeng",
+    "type": "SMA",
+    "address": "Jl. Pucang Anom Timur No. 9, Gubeng, Surabaya"
+  },
+  {
+    "id": "sch_14",
+    "name": "SD Negeri Gubeng I",
+    "lat": -7.2688,
+    "lon": 112.7534,
+    "district": "Gubeng",
+    "type": "SD",
+    "address": "Jl. Gubeng Pojok No. 7, Gubeng, Surabaya"
+  },
+  {
+    "id": "sch_15",
+    "name": "SMP Negeri 6 Surabaya",
+    "lat": -7.2645,
+    "lon": 112.7482,
+    "district": "Genteng",
+    "type": "SMP",
+    "address": "Jl. Jawa No. 24, Gubeng, Surabaya"
+  },
+  {
+    "id": "sch_16",
+    "name": "SMA Negeri 5 Surabaya",
+    "lat": -7.2605,
+    "lon": 112.7505,
+    "district": "Genteng",
+    "type": "SMA",
+    "address": "Jl. Kusuma Bangsa No. 21, Genteng, Surabaya"
+  },
+  {
+    "id": "sch_17",
+    "name": "SMA Negeri 2 Surabaya",
+    "lat": -7.2612,
+    "lon": 112.751,
+    "district": "Genteng",
+    "type": "SMA",
+    "address": "Jl. Wijaya Kusuma No. 48, Genteng, Surabaya"
+  },
+  {
+    "id": "sch_18",
+    "name": "SMA Negeri 1 Surabaya",
+    "lat": -7.2618,
+    "lon": 112.7515,
+    "district": "Genteng",
+    "type": "SMA",
+    "address": "Jl. Wijaya Kusuma No. 48, Genteng, Surabaya"
+  },
+  {
+    "id": "sch_19",
+    "name": "SMA Negeri 9 Surabaya",
+    "lat": -7.2625,
+    "lon": 112.7522,
+    "district": "Genteng",
+    "type": "SMA",
+    "address": "Jl. Wijaya Kusuma No. 48, Genteng, Surabaya"
+  },
+  {
+    "id": "sch_20",
+    "name": "SMP Negeri 1 Surabaya",
+    "lat": -7.2568,
+    "lon": 112.7478,
+    "district": "Genteng",
+    "type": "SMP",
+    "address": "Jl. Pacar No. 4, Genteng, Surabaya"
+  },
+  {
+    "id": "sch_21",
+    "name": "SD Negeri Kaliasin I",
+    "lat": -7.2628,
+    "lon": 112.7415,
+    "district": "Tegalsari",
+    "type": "SD",
+    "address": "Jl. Gubernur Suryo No. 28, Tegalsari, Surabaya"
+  },
+  {
+    "id": "sch_22",
+    "name": "SMP Negeri 3 Surabaya",
+    "lat": -7.2541,
+    "lon": 112.7425,
+    "district": "Genteng",
+    "type": "SMP",
+    "address": "Jl. Praban No. 3, Genteng, Surabaya"
+  },
+  {
+    "id": "sch_23",
+    "name": "SMA Katolik Santa Maria",
+    "lat": -7.2821,
+    "lon": 112.7389,
+    "district": "Tegalsari",
+    "type": "SMA",
+    "address": "Jl. Raya Darmo No. 49, Tegalsari, Surabaya"
+  },
+  {
+    "id": "sch_24",
+    "name": "SD Katolik Santa Maria",
+    "lat": -7.2818,
+    "lon": 112.7392,
+    "district": "Tegalsari",
+    "type": "SD",
+    "address": "Jl. Raya Darmo No. 49, Tegalsari, Surabaya"
+  },
+  {
+    "id": "sch_25",
+    "name": "SD Katolik Santo Mikael",
+    "lat": -7.2721,
+    "lon": 112.7381,
+    "district": "Tegalsari",
+    "type": "SD",
+    "address": "Jl. Kombes Pol M Duryat No. 12, Tegalsari, Surabaya"
+  },
+  {
+    "id": "sch_26",
+    "name": "SMP Negeri 12 Surabaya",
+    "lat": -7.2915,
+    "lon": 112.7428,
+    "district": "Wonokromo",
+    "type": "SMP",
+    "address": "Jl. Ngagel Barat No. 12, Wonokromo, Surabaya"
+  },
+  {
+    "id": "sch_27",
+    "name": "SD Islam Al Azhar 11 Surabaya",
+    "lat": -7.2941,
+    "lon": 112.7665,
+    "district": "Rungkut",
+    "type": "SD",
+    "address": "Jl. Florence Blok J, Rungkut, Surabaya"
+  },
+  {
+    "id": "sch_28",
+    "name": "SMP Islam Al Azhar 13 Surabaya",
+    "lat": -7.2945,
+    "lon": 112.7672,
+    "district": "Rungkut",
+    "type": "SMP",
+    "address": "Jl. Florence Blok J, Rungkut, Surabaya"
+  },
+  {
+    "id": "sch_29",
+    "name": "SMA Negeri 17 Surabaya",
+    "lat": -7.3112,
+    "lon": 112.7725,
+    "district": "Rungkut",
+    "type": "SMA",
+    "address": "Jl. Rungkut Asri Tengah No. 2, Rungkut, Surabaya"
+  },
+  {
+    "id": "sch_30",
+    "name": "SMP Negeri 35 Surabaya",
+    "lat": -7.3168,
+    "lon": 112.7782,
+    "district": "Rungkut",
+    "type": "SMP",
+    "address": "Jl. Rungkut Asri No. 22, Rungkut, Surabaya"
+  },
+  {
+    "id": "sch_31",
+    "name": "SD Negeri Rungkut Menanggal I",
+    "lat": -7.3251,
+    "lon": 112.7654,
+    "district": "Rungkut",
+    "type": "SD",
+    "address": "Jl. Rungkut Menanggal Harapan, Rungkut, Surabaya"
+  },
+  {
+    "id": "sch_32",
+    "name": "SMP Negeri 23 Surabaya",
+    "lat": -7.3142,
+    "lon": 112.7531,
+    "district": "Wonocolo",
+    "type": "SMP",
+    "address": "Jl. Barata Jaya XX No. 1, Wonocolo, Surabaya"
+  },
+  {
+    "id": "sch_33",
+    "name": "SMA Negeri 10 Surabaya",
+    "lat": -7.3045,
+    "lon": 112.7422,
+    "district": "Wonokromo",
+    "type": "SMA",
+    "address": "Jl. Jemursari Selatan No. 1, Wonokromo, Surabaya"
+  },
+  {
+    "id": "sch_34",
+    "name": "SMA Khadijah Surabaya",
+    "lat": -7.3005,
+    "lon": 112.7354,
+    "district": "Wonokromo",
+    "type": "SMA",
+    "address": "Jl. Ahmad Yani No. 2-4, Wonokromo, Surabaya"
+  },
+  {
+    "id": "sch_35",
+    "name": "SMP Khadijah Surabaya",
+    "lat": -7.3012,
+    "lon": 112.7358,
+    "district": "Wonokromo",
+    "type": "SMP",
+    "address": "Jl. Ahmad Yani No. 2-4, Wonokromo, Surabaya"
+  },
+  {
+    "id": "sch_36",
+    "name": "SD Khadijah Surabaya",
+    "lat": -7.3018,
+    "lon": 112.7362,
+    "district": "Wonokromo",
+    "type": "SD",
+    "address": "Jl. Ahmad Yani No. 2-4, Wonokromo, Surabaya"
+  },
+  {
+    "id": "sch_37",
+    "name": "SMA Al Hikmah Surabaya",
+    "lat": -7.3195,
+    "lon": 112.7328,
+    "district": "Gayungan",
+    "type": "SMA",
+    "address": "Jl. Kebonsari Elveka No. 9, Gayungan, Surabaya"
+  },
+  {
+    "id": "sch_38",
+    "name": "SMP Al Hikmah Surabaya",
+    "lat": -7.3201,
+    "lon": 112.7332,
+    "district": "Gayungan",
+    "type": "SMP",
+    "address": "Jl. Kebonsari Elveka No. 9, Gayungan, Surabaya"
+  },
+  {
+    "id": "sch_39",
+    "name": "SD Al Hikmah Surabaya",
+    "lat": -7.3208,
+    "lon": 112.7335,
+    "district": "Gayungan",
+    "type": "SD",
+    "address": "Jl. Kebonsari Elveka No. 9, Gayungan, Surabaya"
+  },
+  {
+    "id": "sch_40",
+    "name": "SMA Negeri 15 Surabaya",
+    "lat": -7.3152,
+    "lon": 112.7291,
+    "district": "Gayungan",
+    "type": "SMA",
+    "address": "Jl. Menanggal Selatan No. 1, Gayungan, Surabaya"
+  },
+  {
+    "id": "sch_41",
+    "name": "SMP Negeri 22 Surabaya",
+    "lat": -7.314,
+    "lon": 112.7275,
+    "district": "Gayungan",
+    "type": "SMP",
+    "address": "Jl. Gayungsari Barat No. 10, Gayungan, Surabaya"
+  },
+  {
+    "id": "sch_42",
+    "name": "SD Negeri Gayungan I",
+    "lat": -7.3182,
+    "lon": 112.7262,
+    "district": "Gayungan",
+    "type": "SD",
+    "address": "Jl. Gayung Kebonsari No. 15, Gayungan, Surabaya"
+  },
+  {
+    "id": "sch_43",
+    "name": "SMP Negeri 18 Surabaya",
+    "lat": -7.2431,
+    "lon": 112.7897,
+    "district": "Bulak",
+    "type": "SMP",
+    "address": "Jl. Bambang Sutoro, Bulak, Kenjeran, Surabaya"
+  },
+  {
+    "id": "sch_44",
+    "name": "SMA Negeri 3 Surabaya",
+    "lat": -7.2341,
+    "lon": 112.7485,
+    "district": "Simokerto",
+    "type": "SMA",
+    "address": "Jl. Memet Sastrawirya No. 2, Kenjeran, Surabaya"
+  },
+  {
+    "id": "sch_45",
+    "name": "SMP Negeri 15 Surabaya",
+    "lat": -7.2382,
+    "lon": 112.7725,
+    "district": "Kenjeran",
+    "type": "SMP",
+    "address": "Jl. Kedung Cowek No. 50, Kenjeran, Surabaya"
+  },
+  {
+    "id": "sch_46",
+    "name": "SMA Negeri 19 Surabaya",
+    "lat": -7.2355,
+    "lon": 112.7762,
+    "district": "Kenjeran",
+    "type": "SMA",
+    "address": "Jl. Kedung Cowek No. 390, Kenjeran, Surabaya"
+  },
+  {
+    "id": "sch_47",
+    "name": "SD Katolik Stella Maris",
+    "lat": -7.2465,
+    "lon": 112.7365,
+    "district": "Bubutan",
+    "type": "SD",
+    "address": "Jl. Tembaan No. 8, Bubutan, Surabaya"
+  },
+  {
+    "id": "sch_48",
+    "name": "SMP Katolik Stella Maris",
+    "lat": -7.2468,
+    "lon": 112.7368,
+    "district": "Bubutan",
+    "type": "SMP",
+    "address": "Jl. Tembaan No. 8, Bubutan, Surabaya"
+  },
+  {
+    "id": "sch_49",
+    "name": "SMA Katolik Stella Maris",
+    "lat": -7.2472,
+    "lon": 112.7372,
+    "district": "Bubutan",
+    "type": "SMA",
+    "address": "Jl. Tembaan No. 8, Bubutan, Surabaya"
+  },
+  {
+    "id": "sch_50",
+    "name": "SD Negeri Ketabang I",
+    "lat": -7.2585,
+    "lon": 112.7462,
+    "district": "Genteng",
+    "type": "SD",
+    "address": "Jl. Ambengan No. 29, Genteng, Surabaya"
+  },
+  {
+    "id": "sch_51",
+    "name": "SD Kristen Petra 1",
+    "lat": -7.2662,
+    "lon": 112.7455,
+    "district": "Genteng",
+    "type": "SD",
+    "address": "Jl. Embong Kemiri No. 11, Genteng, Surabaya"
+  },
+  {
+    "id": "sch_52",
+    "name": "SMP Kristen Petra 1",
+    "lat": -7.2668,
+    "lon": 112.7458,
+    "district": "Genteng",
+    "type": "SMP",
+    "address": "Jl. Embong Kemiri No. 11, Genteng, Surabaya"
+  },
+  {
+    "id": "sch_53",
+    "name": "SMA Kristen Petra 1",
+    "lat": -7.2674,
+    "lon": 112.7461,
+    "district": "Genteng",
+    "type": "SMA",
+    "address": "Jl. Embong Kemiri No. 11, Genteng, Surabaya"
+  },
+  {
+    "id": "sch_54",
+    "name": "SD Kristen Petra 5",
+    "lat": -7.2982,
+    "lon": 112.7495,
+    "district": "Wonokromo",
+    "type": "SD",
+    "address": "Jl. Jemur Andayani No. 2, Wonokromo, Surabaya"
+  },
+  {
+    "id": "sch_55",
+    "name": "SMP Kristen Petra 5",
+    "lat": -7.2988,
+    "lon": 112.7498,
+    "district": "Wonokromo",
+    "type": "SMP",
+    "address": "Jl. Jemur Andayani No. 2, Wonokromo, Surabaya"
+  },
+  {
+    "id": "sch_56",
+    "name": "SMA Kristen Petra 5",
+    "lat": -7.2995,
+    "lon": 112.7502,
+    "district": "Wonokromo",
+    "type": "SMA",
+    "address": "Jl. Jemur Andayani No. 2, Wonokromo, Surabaya"
+  },
+  {
+    "id": "sch_57",
+    "name": "SD Negeri Mojo III",
+    "lat": -7.2708,
+    "lon": 112.7634,
+    "district": "Gubeng",
+    "type": "SD",
+    "address": "Jl. Mojo III No. 25, Gubeng, Surabaya"
+  },
+  {
+    "id": "sch_58",
+    "name": "SD Negeri Airlangga I",
+    "lat": -7.2692,
+    "lon": 112.7589,
+    "district": "Gubeng",
+    "type": "SD",
+    "address": "Jl. Dharmawangsa No. 12, Gubeng, Surabaya"
+  },
+  {
+    "id": "sch_59",
+    "name": "SMP Negeri 4 Surabaya",
+    "lat": -7.2592,
+    "lon": 112.7431,
+    "district": "Genteng",
+    "type": "SMP",
+    "address": "Jl. Tanjung Anom No. 24, Genteng, Surabaya"
+  },
+  {
+    "id": "sch_60",
+    "name": "SD Negeri Barata Jaya",
+    "lat": -7.2952,
+    "lon": 112.7562,
+    "district": "Gubeng",
+    "type": "SD",
+    "address": "Jl. Barata Jaya No. 42, Gubeng, Surabaya"
+  },
+  {
+    "id": "sch_61",
+    "name": "SD Negeri Keputih No. 245",
+    "lat": -7.2882,
+    "lon": 112.8021,
+    "district": "Sukolilo",
+    "type": "SD",
+    "address": "Jl. Keputih Tegal No. 10, Sukolilo, Surabaya"
+  },
+  {
+    "id": "sch_62",
+    "name": "SMP Negeri 49 Surabaya",
+    "lat": -7.3025,
+    "lon": 112.7985,
+    "district": "Sukolilo",
+    "type": "SMP",
+    "address": "Jl. Medokan Semampir AWS, Sukolilo, Surabaya"
+  },
+  {
+    "id": "sch_63",
+    "name": "SMA Negeri 14 Surabaya",
+    "lat": -7.3065,
+    "lon": 112.782,
+    "district": "Rungkut",
+    "type": "SMA",
+    "address": "Jl. Raya Tenggilis Mejoyo No. 1, Rungkut, Surabaya"
+  },
+  {
+    "id": "sch_64",
+    "name": "SD Negeri Kali Rungkut I",
+    "lat": -7.3188,
+    "lon": 112.7735,
+    "district": "Rungkut",
+    "type": "SD",
+    "address": "Jl. Raya Kali Rungkut No. 34, Rungkut, Surabaya"
+  },
+  {
+    "id": "sch_65",
+    "name": "SD Negeri Gebang Putih No. 405",
+    "lat": -7.2838,
+    "lon": 112.7879,
+    "district": "Sukolilo",
+    "type": "SD",
+    "address": "Jl. Gebang Putih No. 18, Sukolilo, Surabaya"
+  }
+]

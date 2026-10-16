@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Group 6{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Delius&family=Delius+Unicase&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="sidebar-title" href="/">Group 6</a>
+    <nav aria-label="Primary">
+      <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Home</a>
+      <a class="nav-link {% if request.path == '/task1' %}active{% endif %}" href="/task1">Task 1 — SPPG Simulator</a>
+      <a class="nav-link {% if request.path == '/task2' %}active{% endif %}" href="/task2">Task 2 — DLH Simulator</a>
+      <a class="nav-link {% if request.path == '/task3' %}active{% endif %}" href="/task3">Task 3 — Knight's Tour</a>
+    </nav>
+  </aside>
+  <main class="content">{% block content %}{% endblock %}</main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

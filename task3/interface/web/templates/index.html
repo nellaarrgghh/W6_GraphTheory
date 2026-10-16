@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Knight's Tour</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="page">
+    <h1>Knight's Tour</h1>
+    <p class="instructions">Choose a starting square, then find a tour that visits every square once.</p>
+    <div id="board" class="board" role="grid" aria-label="8 by 8 chess board"></div>
+    <div class="controls">
+      <button id="solve" type="button">Solve</button>
+      <button id="reset" type="button">Reset</button>
+    </div>
+    <section class="result" aria-live="polite">
+      <h2>Result</h2>
+      <p id="status">Choose a starting square.</p>
+      <p id="order"></p>
+      <p id="time"></p>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

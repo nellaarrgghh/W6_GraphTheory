@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Task 1 | SPPG Simulator{% endblock %}
+{% block head %}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Task 1</p><h1>SPPG Simulator</h1><p>Set a facility and search its delivery radius.</p></header>
+<section class="simulator">
+  <div class="map-placeholder" data-map="task1"><span>Map area</span></div>
+  <form class="solver-form" data-task="task1">
+    <label>Pick SPPG location <input name="location" placeholder="-7.2825, 112.7944" required></label>
+    <label>Radius <output>10 km</output><input name="radius_km" type="range" min="1" max="20" value="10"></label>
+    <button type="submit">Find Route</button>
+  </form>
+  <section class="panel" aria-live="polite"><h2>Route summary</h2><p class="solver-status">No route requested.</p><dl><dt>School visiting order</dt><dd>—</dd><dt>Total distance</dt><dd>—</dd><dt>Estimated travel time</dt><dd>—</dd><dt>Solver execution time</dt><dd>—</dd></dl></section>
+</section>
+{% endblock %}

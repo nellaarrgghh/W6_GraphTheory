@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Task 3 | Knight's Tour{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Task 3</p><h1>Knight's Tour</h1><p>Choose a starting square and search the full board.</p></header>
+<section class="tour-layout">
+  <div class="board-frame">
+    <div class="rank-labels" aria-hidden="true">
+      <span>8</span><span>7</span><span>6</span><span>5</span>
+      <span>4</span><span>3</span><span>2</span><span>1</span>
+    </div>
+    <div class="board-column">
+      <div id="board" class="board" aria-label="8 by 8 board" role="grid"></div>
+      <div class="file-labels" aria-hidden="true">
+        <span>1</span><span>2</span><span>3</span><span>4</span>
+        <span>5</span><span>6</span><span>7</span><span>8</span>
+      </div>
+    </div>
+  </div>
+  <div class="tour-controls">
+    <button id="solve-tour" type="button">Solve</button>
+    <button id="reset-tour" type="button">Reset</button>
+    <label for="animation-speed">Animation
+      <select id="animation-speed">
+        <option value="slow">Slow</option>
+        <option value="normal" selected>Normal</option>
+        <option value="fast">Fast</option>
+      </select>
+    </label>
+  </div>
+  <section class="panel" aria-live="polite">
+    <h2>Tour summary</h2>
+    <p id="tour-status">Choose a starting square.</p>
+    <p id="tour-endpoints"></p>
+    <ol id="tour-order"></ol>
+    <p id="tour-time"></p>
+  </section>
+</section>
+{% endblock %}

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPPG Mealbox Delivery Simulator | TSP Hamiltonian Cycle</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-content">
+            <h1>SPPG Mealbox Delivery Simulator</h1>
+            <p class="subtitle">Task 1: Travelling Salesman Problem &bull; Digraph Road Network &bull; Hamiltonian Cycle</p>
+        </div>
+        <div class="header-badge">Institut Teknologi Sepuluh Nopember</div>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar Controls & Output -->
+        <aside class="sidebar">
+            <section class="panel control-panel">
+                <h2>Simulation Setup</h2>
+                
+                <div class="form-group">
+                    <label for="preset-select">SPPG Hub Location:</label>
+                    <select id="preset-select" class="form-control">
+                        <option value="its" selected>Bundaran ITS Sukolilo</option>
+                        <option value="gubeng">Stasiun Gubeng</option>
+                        <option value="downtown">Balai Kota / Genteng</option>
+                        <option value="wonokromo">Taman Bungkul / Wonokromo</option>
+                        <option value="rungkut">MERR Rungkut Madya</option>
+                        <option value="custom">Custom (Click on Map)</option>
+                    </select>
+                    <span class="hint" id="coord-display">Coord: -7.28250, 112.79440</span>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-with-val">
+                        <label for="radius-slider">Delivery Radius:</label>
+                        <span id="radius-val" class="highlight-val">2.5 km</span>
+                    </div>
+                    <input type="range" id="radius-slider" min="0.8" max="6.0" step="0.1" value="2.5" class="slider" />
+                </div>
+
+                <div class="form-group">
+                    <label for="algo-select">TSP Hamiltonian Solver:</label>
+                    <select id="algo-select" class="form-control">
+                        <option value="auto" selected>Auto (Exact &le; 12, else 2-Opt)</option>
+                        <option value="exact">Exact Hamiltonian (Branch & Bound)</option>
+                        <option value="heuristic_2opt">Heuristic Hamiltonian (2-Opt)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="route-provider">Routing Provider:</label>
+                    <select id="route-provider" class="form-control">
+                        <option value="local" selected>Surabaya Digraph (Dijkstra - Offline Safe)</option>
+                        <option value="osrm">OSM OSRM (Live Driving Network)</option>
+                    </select>
+                </div>
+
+                <button id="solve-btn" class="btn-primary">Calculate Optimal Delivery Route</button>
+            </section>
+
+            <!-- Metrics Panel -->
+            <section class="panel metrics-panel" id="metrics-panel">
+                <h2>Execution Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-label">Schools Visited</span>
+                        <span class="metric-value" id="metric-schools">-</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Total Distance</span>
+                        <span class="metric-value" id="metric-dist">-</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Est. Travel Time</span>
+                        <span class="metric-value" id="metric-time">-</span>
+                    </div>
+                    <div class="metric-card highlight">
+                        <span class="metric-label">TSP Solver Time</span>
+                        <span class="metric-value" id="metric-exec-time">-</span>
+                    </div>
+                </div>
+                <div class="algo-tag" id="algo-used-badge">Ready to simulate</div>
+            </section>
+
+            <!-- Order Table Panel -->
+            <section class="panel order-panel" id="order-panel">
+                <h2>School Visiting Sequence</h2>
+                <div class="table-wrapper">
+                    <table class="order-table" id="visiting-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Location</th>
+                                <th>Leg Dist</th>
+                                <th>Leg Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="visiting-tbody">
+                            <tr>
+                                <td colspan="4" class="empty-state">Click "Calculate Optimal Delivery Route" to view schedule</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </aside>
+
+        <!-- Main Map -->
+        <main class="map-wrapper">
+            <div id="map"></div>
+            <div class="map-legend">
+                <div class="legend-item"><span class="legend-icon hub-icon"></span> SPPG Catering Hub</div>
+                <div class="legend-item"><span class="legend-icon school-icon"></span> Schools in Radius</div>
+                <div class="legend-item"><span class="legend-line"></span> Road TSP Route</div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const PRESETS = {
+            its: { lat: -7.2825, lon: 112.7944, name: "Bundaran ITS Sukolilo" },
+            gubeng: { lat: -7.2654, lon: 112.7520, name: "Stasiun Gubeng" },
+            downtown: { lat: -7.2625, lon: 112.7480, name: "Balai Kota / Genteng" },
+            wonokromo: { lat: -7.2885, lon: 112.7385, name: "Taman Bungkul / Wonokromo" },
+            rungkut: { lat: -7.3180, lon: 112.7750, name: "MERR Rungkut Madya" }
+        };
+
+        let map, sppgMarker, radiusCircle;
+        let schoolMarkersLayer = L.layerGroup();
+        let routeLayer = L.layerGroup();
+
+        let currentSppg = { lat: PRESETS.its.lat, lon: PRESETS.its.lon };
+        let currentRadius = 2.5;
+
+        function initMap() {
+            map = L.map('map').setView([currentSppg.lat, currentSppg.lon], 14);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors',
+                maxZoom: 18
+            }).addTo(map);
+
+            schoolMarkersLayer.addTo(map);
+            routeLayer.addTo(map);
+
+            updateSppgLocation(currentSppg.lat, currentSppg.lon, "Bundaran ITS Sukolilo");
+
+            map.on('click', function(e) {
+                document.getElementById('preset-select').value = 'custom';
+                updateSppgLocation(e.latlng.lat, e.latlng.lng, "Custom SPPG Location");
+            });
+
+            fetchAndDisplaySchools();
+        }
+
+        function updateSppgLocation(lat, lon, label) {
+            currentSppg = { lat, lon };
+            document.getElementById('coord-display').innerText = `Coord: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+
+            if (sppgMarker) map.removeLayer(sppgMarker);
+            if (radiusCircle) map.removeLayer(radiusCircle);
+
+            const sppgIcon = L.divIcon({
+                className: 'custom-hub-marker',
+                html: '<div class="hub-pin"><span>SPPG</span></div>',
+                iconSize: [40, 40],
+                iconAnchor: [20, 20]
+            });
+
+            sppgMarker = L.marker([lat, lon], { icon: sppgIcon }).addTo(map);
+            sppgMarker.bindPopup(`<b>${label}</b><br>SPPG Catering Facility (MBG)`).openPopup();
+
+            radiusCircle = L.circle([lat, lon], {
+                radius: currentRadius * 1000,
+                color: '#2563eb',
+                fillColor: '#3b82f6',
+                fillOpacity: 0.12,
+                weight: 2,
+                dashArray: '6, 6'
+            }).addTo(map);
+
+            fetchAndDisplaySchools();
+        }
+
+        function fetchAndDisplaySchools() {
+            fetch(`/api/schools?lat=${currentSppg.lat}&lon=${currentSppg.lon}&radius=${currentRadius}`)
+                .then(r => r.json())
+                .then(data => {
+                    schoolMarkersLayer.clearLayers();
+                    routeLayer.clearLayers();
+                    document.getElementById('metric-schools').innerText = data.count;
+
+                    data.schools.forEach(s => {
+                        const marker = L.circleMarker([s.lat, s.lon], {
+                            radius: 7,
+                            fillColor: '#f97316',
+                            color: '#ffffff',
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 0.9
+                        });
+                        marker.bindPopup(`<b>${s.name}</b><br>${s.district} &bull; ${s.distance_from_sppg_km} km from SPPG`);
+                        schoolMarkersLayer.addLayer(marker);
+                    });
+                });
+        }
+
+        document.getElementById('preset-select').addEventListener('change', function(e) {
+            const val = e.target.value;
+            if (val !== 'custom') {
+                const preset = PRESETS[val];
+                map.flyTo([preset.lat, preset.lon], 14);
+                updateSppgLocation(preset.lat, preset.lon, preset.name);
+            }
+        });
+
+        document.getElementById('radius-slider').addEventListener('input', function(e) {
+            currentRadius = parseFloat(e.target.value);
+            document.getElementById('radius-val').innerText = `${currentRadius.toFixed(1)} km`;
+            if (radiusCircle) {
+                radiusCircle.setRadius(currentRadius * 1000);
+            }
+            fetchAndDisplaySchools();
+        });
+
+        document.getElementById('solve-btn').addEventListener('click', function() {
+            const btn = document.getElementById('solve-btn');
+            btn.disabled = true;
+            btn.innerText = "Computing Hamiltonian Tour...";
+
+            const payload = {
+                lat: currentSppg.lat,
+                lon: currentSppg.lon,
+                radius: currentRadius,
+                algorithm: document.getElementById('algo-select').value,
+                prefer_osrm: document.getElementById('route-provider').value === 'osrm'
+            };
+
+            fetch('/api/solve_tsp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(r => r.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.innerText = "Calculate Optimal Delivery Route";
+
+                if (data.status !== 'success') {
+                    alert('Error: ' + data.message);
+                    return;
+                }
+
+                const res = data.result;
+                document.getElementById('metric-dist').innerText = `${res.total_distance_km} km`;
+                document.getElementById('metric-time').innerText = `${res.total_time_min} min`;
+                document.getElementById('metric-exec-time').innerText = `${res.solver_time_ms} ms`;
+                document.getElementById('algo-used-badge').innerText = `Algorithm: ${res.algorithm_used}`;
+
+                // Render Route on Map
+                routeLayer.clearLayers();
+                schoolMarkersLayer.clearLayers();
+
+                if (res.full_polyline && res.full_polyline.length > 0) {
+                    const poly = L.polyline(res.full_polyline, {
+                        color: '#2563eb',
+                        weight: 5,
+                        opacity: 0.85,
+                        lineJoin: 'round'
+                    }).addTo(routeLayer);
+
+                    map.fitBounds(poly.getBounds(), { padding: [40, 40] });
+                }
+
+                // Render numbered school markers in order
+                const tbody = document.getElementById('visiting-tbody');
+                tbody.innerHTML = '';
+
+                // SPPG Start row
+                const startTr = document.createElement('tr');
+                startTr.innerHTML = `<td><b>Start</b></td><td><b>SPPG Facility</b></td><td>-</td><td>-</td>`;
+                tbody.appendChild(startTr);
+
+                res.school_order.forEach(s => {
+                    const numIcon = L.divIcon({
+                        className: 'custom-school-marker',
+                        html: `<div class="order-badge">${s.order}</div>`,
+                        iconSize: [28, 28],
+                        iconAnchor: [14, 14]
+                    });
+
+                    const m = L.marker([s.lat, s.lon], { icon: numIcon }).addTo(routeLayer);
+                    m.bindPopup(`<b>Stop ${s.order}: ${s.name}</b><br>${s.district}<br>+${s.distance_from_prev_km} km (${s.travel_time_from_prev_min} min)`);
+
+                    const tr = document.createElement('tr');
+                    tr.style.cursor = 'pointer';
+                    tr.innerHTML = `
+                        <td><span class="table-badge">${s.order}</span></td>
+                        <td><b>${s.name}</b><br><small>${s.district}</small></td>
+                        <td>+${s.distance_from_prev_km} km</td>
+                        <td>+${s.travel_time_from_prev_min} min</td>
+                    `;
+                    tr.addEventListener('click', () => {
+                        map.flyTo([s.lat, s.lon], 16);
+                        m.openPopup();
+                    });
+                    tbody.appendChild(tr);
+                });
+
+                // SPPG Return row
+                const lastSeg = res.route_segments[res.route_segments.length - 1];
+                const endDist = lastSeg ? (lastSeg.distance_m / 1000).toFixed(2) : '0.00';
+                const endTime = lastSeg ? (lastSeg.travel_time_s / 60).toFixed(1) : '0.0';
+                const endTr = document.createElement('tr');
+                endTr.innerHTML = `<td><b>End</b></td><td><b>Return to SPPG Hub</b></td><td>+${endDist} km</td><td>+${endTime} min</td>`;
+                tbody.appendChild(endTr);
+            })
+            .catch(err => {
+                btn.disabled = false;
+                btn.innerText = "Calculate Optimal Delivery Route";
+                alert('Request failed: ' + err);
+            });
+        });
+
+        window.onload = initMap;
+    </script>
+</body>
+</html>
