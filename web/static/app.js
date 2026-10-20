@@ -1,5 +1,4 @@
 const formNodes = document.querySelectorAll(".solver-form");
-const boardNode = document.getElementById("board");
 const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 formNodes.forEach((formNode) => {
@@ -20,112 +19,186 @@ formNodes.forEach((formNode) => {
   });
 });
 
-if (boardNode) {
+const tourForm = document.getElementById("tour-form");
+if (tourForm) {
+  const tourError = document.getElementById("tour-error");
+  const boardContainer = document.getElementById("board-container");
+  const boardArea = document.getElementById("board-area");
+  const boardNode = document.getElementById("board");
+  const rowLabelsNode = document.getElementById("row-labels");
+  const colLabelsNode = document.getElementById("col-labels");
+  const solveBtn = document.getElementById("solve-tour");
+  const resetBtn = document.getElementById("reset-tour");
   const tourStatus = document.getElementById("tour-status");
-  const tourOrder = document.getElementById("tour-order");
-  const tourEndpoints = document.getElementById("tour-endpoints");
   const tourTime = document.getElementById("tour-time");
-  const animationSpeed = document.getElementById("animation-speed");
-  const animationDelays = { slow: 220, normal: 65, fast: 15 };
-  let start = [2, 2];
-  let animationId = 0;
+  const tourOrder = document.getElementById("tour-order");
 
-  for (let row = 0; row < 8; row += 1) {
-    for (let col = 0; col < 8; col += 1) {
-      const square = document.createElement("button");
-      square.type = "button";
-      square.className = `square ${(col + row) % 2 ? "dark" : "light"}`;
-      square.dataset.col = col;
-      square.dataset.row = row;
-      square.setAttribute("aria-label", `Column ${col}, row ${row}`);
-      boardNode.append(square);
-    }
-  }
+  let storedOutcome = null;
+  let animationToken = 0;
 
   const squareAt = (col, row) => boardNode.querySelector(`[data-col="${col}"][data-row="${row}"]`);
-  const clearBoard = () => boardNode.querySelectorAll(".square").forEach((square) => {
-    square.classList.remove("selected", "start-point", "end-point");
-    square.replaceChildren();
-  });
-  const showStart = () => {
-    clearBoard();
-    const square = squareAt(start[0], start[1]);
-    square.classList.add("selected", "start-point");
-    const knight = document.createElement("img");
-    knight.className = "knight-piece";
-    knight.src = "/static/knight.jpg";
-    knight.alt = "knight";
-    square.append(knight);
+
+  const createKnight = () => {
+    const knightImg = document.createElement("img");
+    knightImg.className = "knight-piece";
+    knightImg.src = "/static/knight.jpg";
+    knightImg.alt = "knight";
+    return knightImg;
   };
-  const showOrder = (path) => {
-    tourOrder.replaceChildren();
-    path.forEach(([col, row]) => {
-      const move = document.createElement("li");
-      move.textContent = `(${col}, ${row})`;
-      tourOrder.append(move);
-    });
-  };
-  const animateTour = async (path, token) => {
-    for (let index = 0; index < path.length; index += 1) {
-      if (token !== animationId) return;
-      const [col, row] = path[index];
-      const square = squareAt(col, row);
-      const number = document.createElement("span");
-      number.textContent = index + 1;
-      square.replaceChildren(number);
-      square.classList.toggle("start-point", index === 0);
-      square.classList.toggle("end-point", index === path.length - 1);
-      const knight = document.createElement("img");
-      knight.className = "knight-piece";
-      knight.src = "/static/knight.jpg";
-      knight.alt = "knight";
-      square.append(knight);
-      await wait(animationDelays[animationSpeed.value]);
-      if (index !== path.length - 1) knight.remove();
+
+  const drawBoard = (cols, rows, startCol, startRow) => {
+    boardArea.style.setProperty("--cols", cols);
+    boardArea.style.setProperty("--rows", rows);
+    boardNode.style.setProperty("--cols", cols);
+
+    rowLabelsNode.replaceChildren();
+    for (let row = 0; row < rows; row += 1) {
+      const label = document.createElement("span");
+      label.textContent = row;
+      rowLabelsNode.append(label);
     }
+
+    colLabelsNode.replaceChildren();
+    for (let col = 0; col < cols; col += 1) {
+      const label = document.createElement("span");
+      label.textContent = col;
+      colLabelsNode.append(label);
+    }
+
+    boardNode.replaceChildren();
+    for (let row = 0; row < rows; row += 1) {
+      for (let col = 0; col < cols; col += 1) {
+        const square = document.createElement("div");
+        square.className = `square ${(col + row) % 2 ? "dark" : "light"}`;
+        square.dataset.col = col;
+        square.dataset.row = row;
+        boardNode.append(square);
+      }
+    }
+
+    const startSquare = squareAt(startCol, startRow);
+    if (startSquare) {
+      startSquare.append(createKnight());
+    }
+
+    boardContainer.hidden = false;
+    solveBtn.hidden = false;
+    solveBtn.disabled = false;
   };
-  boardNode.addEventListener("click", (event) => {
-    const square = event.target.closest(".square");
-    if (!square) return;
-    animationId += 1;
-    start = [Number(square.dataset.col), Number(square.dataset.row)];
-    showStart();
-    tourStatus.textContent = `Start: ${start[0]},${start[1]}`;
-    tourEndpoints.textContent = `Starting point: (${start[0]}, ${start[1]})`;
-    tourOrder.textContent = "";
+
+  const resetAll = () => {
+    animationToken += 1;
+    storedOutcome = null;
+    boardNode.replaceChildren();
+    rowLabelsNode.replaceChildren();
+    colLabelsNode.replaceChildren();
+    boardContainer.hidden = true;
+    solveBtn.hidden = true;
+    solveBtn.disabled = false;
+    tourError.textContent = "";
+    tourError.hidden = true;
+    tourStatus.textContent = "";
     tourTime.textContent = "";
-  });
-  document.getElementById("solve-tour").addEventListener("click", async () => {
-    const token = ++animationId;
-    clearBoard();
-    tourStatus.textContent = "Solving...";
-    const requestReply = await fetch("/api/task3/solve", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cols: 8, rows: 8, start_col: start[0], start_row: start[1] }),
+    tourOrder.replaceChildren();
+    tourForm.reset();
+  };
+
+  tourForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    animationToken += 1;
+
+    const cols = Number(tourForm.elements.cols.value);
+    const rows = Number(tourForm.elements.rows.value);
+    const startCol = Number(tourForm.elements.start_col.value);
+    const startRow = Number(tourForm.elements.start_row.value);
+
+    const apiReply = await fetch("/api/task3/solve", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cols, rows, start_col: startCol, start_row: startRow }),
     });
-    const tourState = await requestReply.json();
-    tourTime.textContent = `Execution time: ${tourState.execution_time_ms.toFixed(3)} ms`;
-    tourStatus.textContent = tourState.found ? "Solved" : "path not found";
-    if (!tourState.found) {
-      tourEndpoints.textContent = "";
+    const replyOutcome = await apiReply.json();
+
+    if (replyOutcome.status === "invalid_input") {
+      tourError.textContent = replyOutcome.message;
+      tourError.hidden = false;
+      boardNode.replaceChildren();
+      rowLabelsNode.replaceChildren();
+      colLabelsNode.replaceChildren();
+      boardContainer.hidden = true;
+      solveBtn.hidden = true;
+      storedOutcome = null;
+      return;
+    }
+
+    tourError.textContent = "";
+    tourError.hidden = true;
+    tourStatus.textContent = "";
+    tourTime.textContent = "";
+    tourOrder.replaceChildren();
+
+    storedOutcome = replyOutcome;
+    drawBoard(cols, rows, startCol, startRow);
+  });
+
+  solveBtn.addEventListener("click", async () => {
+    if (!storedOutcome) return;
+
+    if (storedOutcome.status === "path_not_found") {
+      tourStatus.textContent = "path not found";
+      tourTime.textContent = "";
       tourOrder.replaceChildren();
       return;
     }
-    const firstSquare = tourState.path[0];
-    const lastSquare = tourState.path[tourState.path.length - 1];
-    tourEndpoints.textContent = `Starting point: (${firstSquare[0]}, ${firstSquare[1]}) | Final point: (${lastSquare[0]}, ${lastSquare[1]})`;
-    showOrder(tourState.path);
-    await animateTour(tourState.path, token);
-  });
-  document.getElementById("reset-tour").addEventListener("click", () => {
-    animationId += 1;
-    start = [2, 2];
-    showStart();
-    tourStatus.textContent = "Choose a starting square.";
-    tourEndpoints.textContent = `Starting point: (${start[0]}, ${start[1]})`;
-    tourOrder.replaceChildren();
+
+    if (storedOutcome.status !== "solved") return;
+
+    const currentToken = ++animationToken;
+    solveBtn.disabled = true;
+    tourStatus.textContent = "Solving...";
     tourTime.textContent = "";
+    tourOrder.replaceChildren();
+
+    boardNode.querySelectorAll(".square").forEach((square) => {
+      square.replaceChildren();
+    });
+
+    const path = storedOutcome.path;
+    for (let index = 0; index < path.length; index += 1) {
+      if (currentToken !== animationToken) return;
+
+      const [col, row] = path[index];
+      const square = squareAt(col, row);
+      if (square) {
+        square.replaceChildren();
+        const numberSpan = document.createElement("span");
+        numberSpan.textContent = index + 1;
+        square.append(numberSpan);
+
+        const knightImg = createKnight();
+        square.append(knightImg);
+
+        await wait(60);
+
+        if (index !== path.length - 1) {
+          knightImg.remove();
+        }
+      }
+    }
+
+    if (currentToken !== animationToken) return;
+
+    solveBtn.disabled = false;
+    tourStatus.textContent = "Solved";
+    tourTime.textContent = `Execution time: ${storedOutcome.execution_time_ms.toFixed(3)} ms`;
+
+    tourOrder.replaceChildren();
+    path.forEach(([col, row], index) => {
+      const item = document.createElement("li");
+      item.textContent = `${index + 1}. (${col}, ${row})`;
+      tourOrder.append(item);
+    });
   });
-  showStart();
-  tourEndpoints.textContent = `Starting point: (${start[0]}, ${start[1]})`;
+
+  resetBtn.addEventListener("click", resetAll);
 }

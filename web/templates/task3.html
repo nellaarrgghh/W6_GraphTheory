@@ -1,38 +1,51 @@
 {% extends "base.html" %}
 {% block title %}Task 3 | Knight's Tour{% endblock %}
 {% block content %}
-<header class="page-heading"><p class="eyebrow">Task 3</p><h1>Knight's Tour</h1><p>Choose a starting square and search the full board.</p></header>
+<header class="page-heading">
+  <p class="eyebrow">Task 3</p>
+  <h1>Knight's Tour</h1>
+  <p>Enter the board size and knight position, view the board, then solve.</p>
+</header>
 <section class="tour-layout">
-  <div class="board-frame">
-    <div class="rank-labels" aria-hidden="true">
-      <span>8</span><span>7</span><span>6</span><span>5</span>
-      <span>4</span><span>3</span><span>2</span><span>1</span>
+  <form id="tour-form" class="tour-form">
+    <div class="form-grid">
+      <label for="tour-cols">Columns
+        <input id="tour-cols" name="cols" type="number" required step="1">
+      </label>
+      <label for="tour-rows">Rows
+        <input id="tour-rows" name="rows" type="number" required step="1">
+      </label>
+      <label for="tour-start-col">Knight column (x)
+        <input id="tour-start-col" name="start_col" type="number" required step="1">
+      </label>
+      <label for="tour-start-row">Knight row (y)
+        <input id="tour-start-row" name="start_row" type="number" required step="1">
+      </label>
     </div>
-    <div class="board-column">
-      <div id="board" class="board" aria-label="8 by 8 board" role="grid"></div>
-      <div class="file-labels" aria-hidden="true">
-        <span>1</span><span>2</span><span>3</span><span>4</span>
-        <span>5</span><span>6</span><span>7</span><span>8</span>
+    <p class="field-hint">0 is the first column; row 0 is the top row.</p>
+    <div class="form-buttons">
+      <button id="generate-board" type="submit">Generate board</button>
+      <button id="reset-tour" type="button">Reset</button>
+    </div>
+  </form>
+  <div id="tour-error" class="tour-error" role="alert" hidden></div>
+  <div id="board-container" class="board-container" hidden>
+    <div id="board-area" class="board-area">
+      <div class="rank-column" aria-hidden="true">
+        <div id="row-labels" class="row-labels"></div>
       </div>
+      <div id="board" class="board" role="grid"></div>
+      <div id="col-labels" class="col-labels" aria-hidden="true"></div>
+    </div>
+    <div class="tour-actions">
+      <button id="solve-tour" type="button" hidden>Solve</button>
     </div>
   </div>
-  <div class="tour-controls">
-    <button id="solve-tour" type="button">Solve</button>
-    <button id="reset-tour" type="button">Reset</button>
-    <label for="animation-speed">Animation
-      <select id="animation-speed">
-        <option value="slow">Slow</option>
-        <option value="normal" selected>Normal</option>
-        <option value="fast">Fast</option>
-      </select>
-    </label>
-  </div>
-  <section class="panel" aria-live="polite">
+  <section id="tour-panel" class="panel" aria-live="polite">
     <h2>Tour summary</h2>
-    <p id="tour-status">Choose a starting square.</p>
-    <p id="tour-endpoints"></p>
-    <ol id="tour-order"></ol>
+    <p id="tour-status"></p>
     <p id="tour-time"></p>
+    <ol id="tour-order"></ol>
   </section>
 </section>
 {% endblock %}
