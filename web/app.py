@@ -17,11 +17,6 @@ def home():
     return render_template("home.html")
 
 
-@app.get("/task1")
-def task1():
-    return render_template("task1.html")
-
-
 @app.get("/task2")
 def task2():
     return render_template("task2.html")
@@ -30,11 +25,6 @@ def task2():
 @app.get("/task3")
 def task3():
     return render_template("task3.html")
-
-
-@app.post("/api/task1/solve")
-def solve_task1_api():
-    return jsonify({"status": "not_implemented"})
 
 
 @app.post("/api/task2/solve")
