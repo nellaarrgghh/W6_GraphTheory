@@ -2,21 +2,69 @@ const formNodes = document.querySelectorAll(".solver-form");
 const boardNode = document.getElementById("board");
 const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
+// Leaflet Map Initialization for Task 2
+const mapContainer = document.getElementById("map-task2");
+let task2Map = null;
+let task2LayerGroup = null;
+
+if (mapContainer) {
+  task2Map = L.map('map-task2').setView([-7.2825, 112.7944], 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(task2Map);
+  task2LayerGroup = L.layerGroup().addTo(task2Map);
+}
+
 formNodes.forEach((formNode) => {
   const radiusNode = formNode.querySelector("[name=radius_km]");
-  radiusNode.addEventListener("input", () => {
-    formNode.querySelector("output").textContent = `${radiusNode.value} km`;
-  });
+  if (radiusNode) {
+    radiusNode.addEventListener("input", () => {
+      formNode.querySelector("output").textContent = `${radiusNode.value} km`;
+    });
+  }
+
   formNode.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const location = formNode.elements.location.value.split(",").map(Number);
-    const payload = { lat: location[0], lng: location[1], radius_km: Number(radiusNode.value) };
     const routeType = formNode.dataset.task;
-    const routeReply = await fetch(`/api/${routeType}/solve`, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),
-    });
-    const routeState = await routeReply.json();
-    formNode.parentElement.querySelector(".solver-status").textContent = routeState.status;
+    
+    if (routeType === "task2") {
+      const locationInput = formNode.elements.location.value.split(",").map(Number);
+      const payload = { lat: locationInput[0], lng: locationInput[1], radius_km: Number(radiusNode.value) };
+      
+      formNode.parentElement.querySelector(".solver-status").textContent = "Solving Directed Chinese Postman Problem...";
+      
+      const routeReply = await fetch(`/api/task2/solve`, {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),
+      });
+      const routeState = await routeReply.json();
+      
+      formNode.parentElement.querySelector(".solver-status").textContent = routeState.status;
+      
+      if (routeState.status === "Solved") {
+        document.getElementById("t2-distance").textContent = `${routeState.total_distance_km} km`;
+        document.getElementById("t2-time").textContent = `${routeState.est_time_mins} mins`;
+        document.getElementById("t2-exec").textContent = `${routeState.exec_time_sec} s`;
+        
+        const orderList = routeState.street_order.join(", ");
+        document.getElementById("t2-order").textContent = orderList;
+
+        if (task2Map && task2LayerGroup) {
+          task2LayerGroup.clearLayers();
+          task2Map.setView(routeState.base, 14);
+
+          // Add base marker
+          L.marker(routeState.base).addTo(task2LayerGroup)
+            .bindPopup("DLH Dump Truck Base")
+            .openPopup();
+
+          // Add route polylines
+          if (routeState.route_coords && routeState.route_coords.length > 0) {
+            L.polyline(routeState.route_coords, { color: 'blue', weight: 4, opacity: 0.8 }).addTo(task2LayerGroup);
+          }
+        }
+      }
+    }
   });
 });
 
