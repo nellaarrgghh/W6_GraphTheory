@@ -36,4 +36,3 @@ The output contains zero-indexed `col,row` coordinates separated by spaces, or `
 
 The algorithm uses depth-first search with backtracking. It marks each visited square, recursively explores legal unvisited knight moves, and unmarks squares when a branch fails. Candidate moves are sorted using Warnsdorff's rule, which tries the square with the fewest onward moves first. The worst-case complexity is exponential, but this ordering makes common boards such as 8x8 fast in practice.
 
-AI Involved: https://share.gemini.google/ewMdqViiX2Jn | https://share.gemini.google/bTswYCwlnfqW
