@@ -43,6 +43,12 @@ def solve_task2():
 
 @app.post("/api/task3/solve")
 def solve_task3():
-    payload = request.get_json(silent=True) or {}
-    return jsonify(solve(payload.get("cols"), payload.get("rows"),
-                         payload.get("start_col"), payload.get("start_row")))
+    body = request.get_json(silent=True) or {}
+    return jsonify(
+        solve(
+            body.get("cols"),
+            body.get("rows"),
+            body.get("start_col"),
+            body.get("start_row"),
+        )
+    ), 200

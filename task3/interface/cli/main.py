@@ -5,25 +5,32 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
-from task3.engine.service import solve_knights_tour
+from task3.engine.service import solve
 
 
 def main() -> None:
-    first_line = input().split()
-    second_line = input().split()
     try:
-        values = [int(value) for value in first_line + second_line]
-        if len(values) != 4:
-            raise ValueError
-    except ValueError:
-        print("path not found")
-        return
+        first = sys.stdin.readline()
+        second = sys.stdin.readline()
+        if not first or not second:
+            raise ValueError("missing input line")
+        first_tokens = first.split()
+        second_tokens = second.split()
+        if len(first_tokens) != 2 or len(second_tokens) != 2:
+            raise ValueError("each line must contain exactly 2 integers")
+        values = [int(token) for token in first_tokens + second_tokens]
+    except ValueError as exc:
+        sys.stderr.write(f"error: {exc}\n")
+        sys.exit(1)
 
-    result = solve_knights_tour(*values)
-    if result["found"]:
-        print(" ".join(f"{col},{row}" for col, row in result["path"]))
-    else:
+    outcome = solve(*values)
+    if outcome["status"] == "solved":
+        print(" ".join(f"{col},{row}" for col, row in outcome["path"]))
+    elif outcome["status"] == "path_not_found":
         print("path not found")
+    else:
+        sys.stderr.write(f"error: {outcome['message']}\n")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
