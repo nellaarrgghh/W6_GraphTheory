@@ -27,3 +27,6 @@
   From the repository root, run `pip install -r requirements.txt`.
   Start it with `flask --app web/app.py run`.
   Visit http://localhost:5000.
+
+  ## AI Involved
+  AI Involved: https://share.gemini.google/ewMdqViiX2Jn | https://share.gemini.google/bTswYCwlnfqW
