@@ -1,15 +1,31 @@
 {% extends "base.html" %}
 {% block title %}Task 2 | DLH Simulator{% endblock %}
-{% block head %}<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+{% endblock %}
 {% block content %}
-<header class="page-heading"><p class="eyebrow">Task 2</p><h1>DLH Simulator</h1><p>Set a truck base and search its service radius.</p></header>
+<header class="page-heading">
+  <p class="eyebrow">Task 2</p>
+  <h1>DLH Simulator</h1>
+  <p>Set a truck base and search its service radius.</p>
+</header>
 <section class="simulator">
-  <div class="map-placeholder" data-map="task2"><span>Map area</span></div>
+  <div id="map-task2" class="map-placeholder" data-map="task2" style="height: 350px;"><span>Map area</span></div>
   <form class="solver-form" data-task="task2">
-    <label>Pick dump truck base <input name="location" placeholder="-7.2825, 112.7944" required></label>
-    <label>Radius <output>10 km</output><input name="radius_km" type="range" min="1" max="20" value="10"></label>
+    <label>Pick dump truck base <input name="location" value="-7.2825, 112.7944" placeholder="-7.2825, 112.7944" required></label>
+    <label>Radius <output>1.5 km</output><input name="radius_km" type="range" min="0.5" max="5.0" step="0.5" value="1.5"></label>
     <button type="submit">Find Route</button>
   </form>
-  <section class="panel" aria-live="polite"><h2>Route summary</h2><p class="solver-status">No route requested.</p><dl><dt>Street traversal order</dt><dd>—</dd><dt>Total distance</dt><dd>—</dd><dt>Estimated travel time</dt><dd>—</dd><dt>Solver execution time</dt><dd>—</dd></dl></section>
+  <section class="panel" aria-live="polite">
+    <h2>Route summary</h2>
+    <p class="solver-status">No route requested.</p>
+    <dl>
+      <dt>Street traversal order</dt><dd id="t2-order">—</dd>
+      <dt>Total distance</dt><dd id="t2-distance">—</dd>
+      <dt>Estimated travel time</dt><dd id="t2-time">—</dd>
+      <dt>Solver execution time</dt><dd id="t2-exec">—</dd>
+    </dl>
+  </section>
 </section>
 {% endblock %}

@@ -6,7 +6,8 @@ from pathlib import Path
 from flask import Flask, jsonify, render_template, request
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from task3.engine.service import solve
+from task2.engine.service import solve as solve_task2
+from task3.engine.service import solve as solve_task3
 
 app = Flask(__name__)
 
@@ -32,23 +33,26 @@ def task3():
 
 
 @app.post("/api/task1/solve")
-def solve_task1():
+def solve_task1_api():
     return jsonify({"status": "not_implemented"})
 
 
 @app.post("/api/task2/solve")
-def solve_task2():
-    return jsonify({"status": "not_implemented"})
+def solve_task2_api():
+    payload = request.get_json(silent=True) or {}
+    lat = payload.get("lat", -7.2825)
+    lng = payload.get("lng", 112.7944)
+    radius_km = payload.get("radius_km", 1.5)
+    
+    return jsonify(solve_task2(lat, lng, radius_km))
 
 
 @app.post("/api/task3/solve")
-def solve_task3():
-    body = request.get_json(silent=True) or {}
-    return jsonify(
-        solve(
-            body.get("cols"),
-            body.get("rows"),
-            body.get("start_col"),
-            body.get("start_row"),
-        )
-    ), 200
+def solve_task3_api():
+    payload = request.get_json(silent=True) or {}
+    return jsonify(solve_task3(
+        payload.get("cols"), 
+        payload.get("rows"),
+        payload.get("start_col"),
+        payload.get("start_row")
+    ))
