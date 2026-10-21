@@ -9,6 +9,7 @@ import argparse
 import json
 import math
 from dataclasses import asdict, dataclass
+from functools import lru_cache
 from pathlib import Path
 
 import networkx as nx
@@ -143,6 +144,16 @@ def load_osm(cache_dir=DEFAULT_CACHE_DIR, download=False):
     schools_file.write_text(json.dumps([asdict(s) for s in schools], indent=2, ensure_ascii=False),
                             encoding="utf-8")
     return Dataset(graph, schools, OSM_SOURCE + " (downloaded)")
+
+
+@lru_cache(maxsize=2)
+def load_osm_once(cache_dir=DEFAULT_CACHE_DIR, download=False):
+    """Same as load_osm, but keeps the result in memory.
+
+    Loading the whole Surabaya graph takes about 20 seconds and both
+    Task 1 and Task 2 use it, so we only want to do that once.
+    """
+    return load_osm(cache_dir, download)
 
 
 def main(argv=None):

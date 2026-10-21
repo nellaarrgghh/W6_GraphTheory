@@ -1,35 +1,46 @@
+import re
 import time
 import osmnx as ox
 import networkx as nx
+from task1.engine.osm_data import DEFAULT_CACHE_DIR, haversine_m, load_osm_once
+from task1.engine.road_tour import edge_points
 from task2.algorithm.chinese_postman import solve_dcpp
+
+# The assignment asks for these road types. This also matches the "_link" ramps.
+MAJOR_ROADS = re.compile("trunk|primary|secondary|tertiary")
+
+
+def is_major_road(highway):
+    # OSM sometimes stores a list of types for one road, str() handles both.
+    return MAJOR_ROADS.search(str(highway)) is not None
+
 
 def solve(lat, lng, radius_km):
     """
     Solves the Directed Chinese Postman Problem (DCPP) for Task 2 (DLH Simulator)
-    using live OpenStreetMap road network data.
+    using the saved Surabaya road network (the same cache as Task 1).
     """
-    start_time = time.time()
-    center_point = (lat, lng)
-    radius_meters = radius_km * 1000
-    
-    # Filter for major road classifications as required by the assignment guidelines
-    custom_filter = '["highway"~ "trunk|primary|secondary|tertiary|trunk_link|primary_link|secondary_link|tertiary_link"]'
-    
-    # Always fetch directly from OpenStreetMap via OSMnx
+    # Same saved road data as Task 1, so no download from Overpass every time.
     try:
-        G_sub = ox.graph_from_point(
-            center_point=center_point,
-            dist=radius_meters,
-            custom_filter=custom_filter,
-            network_type="drive",
-            simplify=True,
-            retain_all=False
-        )
-    except Exception as e:
+        city = load_osm_once(DEFAULT_CACHE_DIR)
+    except (OSError, ValueError, ImportError) as e:
         return {
             "status": "error",
-            "message": f"Failed to fetch road network from OpenStreetMap: {str(e)}"
+            "message": f"Road data not loaded: {e}. Run python -m task1.engine.osm_data --download first."
         }
+    G = city.graph
+    radius_meters = radius_km * 1000
+
+    # Keep only major roads that are fully inside the radius circle.
+    inside = set()
+    for node, data in G.nodes(data=True):
+        if haversine_m(lat, lng, data['y'], data['x']) <= radius_meters:
+            inside.add(node)
+    keep = []
+    for u, v, key, data in G.out_edges(inside, keys=True, data=True):
+        if v in inside and is_major_road(data.get('highway')):
+            keep.append((u, v, key))
+    G_sub = G.edge_subgraph(keep).copy()
 
     if len(G_sub.nodes) == 0:
         return {"status": "no_roads_found"}
@@ -37,41 +48,29 @@ def solve(lat, lng, radius_km):
     # Find the nearest network node to the chosen base coordinates
     base_node = ox.distance.nearest_nodes(G_sub, X=lng, Y=lat)
 
-    # Ensure the subgraph is strongly connected containing the base node
+    # Roads that can't be reached from the base (or can't get back to it) are ignored.
     if not nx.is_strongly_connected(G_sub):
-        sccs = list(nx.strongly_connected_components(G_sub))
-        comp = next((c for c in sccs if base_node in c), sccs[0] if sccs else {base_node})
+        comp = next(c for c in nx.strongly_connected_components(G_sub) if base_node in c)
         G_sub = G_sub.subgraph(comp).copy()
-        if base_node not in G_sub and len(G_sub.nodes) > 0:
-            base_node = list(G_sub.nodes())[0]
 
     # Run the DCPP algorithm from the algorithm module
+    start_time = time.time()
     G_aug, route_edges = solve_dcpp(G_sub, base_node)
     exec_time = time.time() - start_time
 
     total_distance_m = 0
     street_order = []
     route_coords = []
-    
-    for u, v in route_edges:
-        edge_data = G_aug.get_edge_data(u, v)
-        street_name = "Unnamed Road"
-        length = 0
-        if edge_data:
-            first_key = list(edge_data.keys())[0]
-            d = edge_data[first_key]
-            street_name = d.get('name', 'Unnamed Road')
-            if isinstance(street_name, list):
-                street_name = ", ".join(street_name)
-            length = d.get('length', 0)
-            total_distance_m += length
-            
+
+    for u, v, key in route_edges:
+        d = G_aug[u][v][key]
+        street_name = d.get('name', 'Unnamed Road')
+        if isinstance(street_name, list):
+            street_name = ", ".join(street_name)
         street_order.append(street_name)
-        if u in G_sub.nodes and v in G_sub.nodes:
-            route_coords.append([
-                [G_sub.nodes[u]['y'], G_sub.nodes[u]['x']], 
-                [G_sub.nodes[v]['y'], G_sub.nodes[v]['x']]
-            ])
+        total_distance_m += d['length']
+        # Follow the real shape of the road instead of a straight line.
+        route_coords.append([list(point) for point in edge_points(G_aug, u, v, d)])
 
     total_distance_km = total_distance_m / 1000.0
     est_time_mins = (total_distance_km / 25.0) * 60  # Assumes 25 km/h urban truck speed

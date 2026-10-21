@@ -57,8 +57,8 @@ def solve_dcpp(G: nx.DiGraph, start_node):
 
     # Find Eulerian circuit
     try:
-        route_edges = list(nx.eulerian_circuit(G_aug, source=start_node))
+        route_edges = list(nx.eulerian_circuit(G_aug, source=start_node, keys=True))
     except nx.NetworkXError:
-        route_edges = [(u, v) for u, v in G_aug.edges()]
+        route_edges = list(G_aug.edges(keys=True))
         
     return G_aug, route_edges
