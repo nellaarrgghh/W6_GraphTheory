@@ -1,6 +1,12 @@
 """Flask website for the three Graph Theory tasks."""
 
 import os
+import sys
+from pathlib import Path
+
+WEB_DIR = Path(__file__).resolve().parent
+if str(WEB_DIR) not in sys.path:
+    sys.path.insert(0, str(WEB_DIR))
 
 from flask import Flask, jsonify, render_template, request
 
