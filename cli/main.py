@@ -7,7 +7,11 @@ Examples:
 """
 
 import sys
+from pathlib import Path
 
+CLI_DIR = Path(__file__).resolve().parent
+if str(CLI_DIR) not in sys.path:
+    sys.path.insert(0, str(CLI_DIR))
 
 def main(argv=None):
     args = sys.argv[1:] if argv is None else list(argv)
