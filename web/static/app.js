@@ -1,4 +1,4 @@
-const formNodes = document.querySelectorAll(".solver-form");
+const formNodes = document.querySelectorAll(".solver-form:not([data-task=task1])");
 const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 // Leaflet Map Initialization for Task 2

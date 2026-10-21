@@ -1,0 +1,77 @@
+#task1-map {
+  display: block;
+  height: 330px;
+  font-family: inherit;
+}
+
+#task1-simulator .task1-note {
+  color: var(--text-light);
+  font-size: .9rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+#task1-simulator .task1-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+#task1-simulator table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+#task1-simulator caption {
+  padding-bottom: .8rem;
+  color: var(--text-light);
+  text-align: left;
+}
+
+#task1-simulator th,
+#task1-simulator td {
+  padding: .65rem .8rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+#task1-simulator th {
+  color: var(--heading);
+  font-weight: 700;
+}
+
+#task1-simulator #task1-matrix td {
+  white-space: nowrap;
+}
+
+#task1-simulator dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+#task1-simulator button:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+#task1-simulator .task1-table-scroll:focus-visible {
+  outline: 2px solid var(--card-1-heading);
+  outline-offset: 3px;
+}
+
+#task1-map .task1-facility-icon {
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  color: var(--surface);
+  background: var(--card-1-heading);
+  box-shadow: 0 0 0 2px var(--card-1-border);
+  font: bold 14px 'Delius', cursive;
+}
+
+#task1-map .leaflet-popup-content {
+  font-family: 'Delius', cursive;
+  overflow-wrap: anywhere;
+}

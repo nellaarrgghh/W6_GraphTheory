@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Task 1 | SPPG Simulator{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='task1.css') }}">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script defer src="{{ url_for('static', filename='task1.js') }}"></script>
+{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Task 1</p><h1>SPPG Simulator</h1><p>Set a facility and search its delivery radius.</p></header>
+<section class="simulator" id="task1-simulator">
+  <div class="map-placeholder" id="task1-map" role="region" aria-label="Map of the SPPG, schools and route"><span>Loading map...</span></div>
+  <form class="solver-form" id="task1-form" data-task="task1">
+    <label>SPPG location (lat, lng) <input name="location" value="-7.2825, 112.7944" required></label>
+    <label>Radius <output id="task1-radius-value">1 km</output><input name="radius_km" type="range" min="0" max="20" step="0.1" value="1"></label>
+    <button type="submit">Find Route</button>
+  </form>
+  <p class="task1-note">Click the map or drag the S marker to move the SPPG. Every school inside the radius gets visited. Held-Karp can handle at most 15 schools, so make the radius smaller if there are more.</p>
+  <p class="task1-note" id="task1-preview" role="status"></p>
+  <section class="panel" aria-live="polite">
+    <h2>Route summary</h2>
+    <p class="solver-status" id="task1-status">No route yet.</p>
+    <dl>
+      <dt>School visiting order</dt><dd id="task1-order">-</dd>
+      <dt>Total distance</dt><dd id="task1-distance">-</dd>
+      <dt>Estimated travel time</dt><dd id="task1-eta">-</dd>
+      <dt>TSP solver execution time</dt><dd id="task1-solver-time">-</dd>
+    </dl>
+  </section>
+</section>
+{% endblock %}

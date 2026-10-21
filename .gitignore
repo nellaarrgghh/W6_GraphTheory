@@ -1,8 +1,47 @@
+# Virtual environments
+venv
 venv/
+.venv
+.venv/
+env/
+ENV/
+
+# Python bytecode & cache
 __pycache__/
-*.pyc
-.DS_Store
-*.log
+*.py[cod]
+*$py.class
+
+# Testing files & directories
+tests/
+test_*.py
+*_test.py
 .pytest_cache/
+pytest.ini
+.coverage
+htmlcov/
+
+# Operating System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# IDE configuration
 .idea/
 .vscode/
+*.swp
+*.swo
+
+# Local backups and archives
+BACKUPS/
+W6_GraphTheory/
+*.zip
+*.log
+
+# Large data and cache files
+data/
+*.graphml
+http_cache/
