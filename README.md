@@ -1,8 +1,8 @@
-# Graph Theory Coding Assignment: Task 2 and Task 3
+# Graph Theory Coding Assignment: Group 6
 
 ## Team Identity
 
-- Team Name: 
+- Team Name: Group6
 - Member 1: 
   - Name: Naila Sa'ada Cahyani 
   - NRP: 5025251258
