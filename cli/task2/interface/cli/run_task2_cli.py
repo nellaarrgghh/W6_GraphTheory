@@ -31,15 +31,17 @@ def main():
     print(f"\nFetching live road network from OpenStreetMap for ({lat}, {lng}) within {radius_km} km...")
     result = solve(lat, lng, radius_km)
     
-    print("\n" + "="*30 + " Simulation Results " + "="*30)
+    print("\n" + "=" * 30 + " Simulation Results " + "=" * 30)
     for key, value in result.items():
         if key == "street_order":
-            print(f"Street Traversal Preview (first 5): {value[:5]} ... ({len(value)} total segments)")
+            print(f"Full Street Traversal Order ({len(value)} total segments):")
+            for idx, street in enumerate(value, 1):
+                print(f"  {idx}. {street}")
         elif key == "route_coords":
             print(f"Route Coordinates Generated: {len(value)} segments")
         else:
             print(f"{key}: {value}")
-    print("="*80)
+    print("=" * 80)
 
 if __name__ == "__main__":
     main()
